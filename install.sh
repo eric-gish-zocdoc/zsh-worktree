@@ -6,9 +6,11 @@
 
 set -e
 
-# If stdin is not a terminal (e.g., piped from curl), reconnect to /dev/tty
+# If stdin is not a terminal (e.g., piped from curl), try to reconnect to /dev/tty
 if [ ! -t 0 ]; then
-  exec </dev/tty
+  if (exec </dev/tty) 2>/dev/null; then
+    exec </dev/tty
+  fi
 fi
 
 REPO_URL="https://github.com/eric-gish-zocdoc/zsh-worktree"
@@ -27,9 +29,18 @@ print_error() { echo -e "${RED}❌ $1${NC}"; }
 print_info() { echo -e "$1"; }
 print_prompt() { echo -e "${BLUE}$1${NC}"; }
 
-# Read from /dev/tty to work with curl | bash
+# Read user input - works with curl | bash by reading from /dev/tty if available
 read_input() {
-  read "$@" </dev/tty
+  if [ -t 0 ]; then
+    # stdin is a terminal, read normally
+    read "$@"
+  elif (exec </dev/tty) 2>/dev/null; then
+    # stdin is piped but /dev/tty works
+    read "$@" </dev/tty
+  else
+    # No tty available, read from stdin (may get empty input)
+    read "$@"
+  fi
 }
 
 # Detect installation method
