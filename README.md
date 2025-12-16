@@ -42,7 +42,7 @@ source ~/.zshrc
 ### One-liner Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ericgish/zsh-worktree/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/eric-gish-zocdoc/zsh-worktree/main/install.sh | bash
 ```
 
 ## Usage
