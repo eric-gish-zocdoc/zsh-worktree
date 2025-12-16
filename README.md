@@ -17,7 +17,7 @@ A Zsh plugin for managing Git worktrees across multiple repositories. Quickly sw
 
 ```bash
 # Clone to your custom plugins directory
-git clone https://github.com/ericgish/zsh-worktree ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/worktree
+git clone https://github.com/eric-gish-zocdoc/zsh-worktree ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/worktree
 
 # Add to plugins in ~/.zshrc
 plugins=(git worktree)
@@ -30,7 +30,7 @@ source ~/.zshrc
 
 ```bash
 # Clone anywhere
-git clone https://github.com/ericgish/zsh-worktree ~/.zsh/plugins/worktree
+git clone https://github.com/eric-gish-zocdoc/zsh-worktree ~/.zsh/plugins/worktree
 
 # Add to ~/.zshrc
 source ~/.zsh/plugins/worktree/worktree.plugin.zsh

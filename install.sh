@@ -6,7 +6,7 @@
 
 set -e
 
-REPO_URL="https://github.com/ericgish/zsh-worktree"
+REPO_URL="https://github.com/eric-gish-zocdoc/zsh-worktree"
 PLUGIN_NAME="worktree"
 
 # Colors for output
