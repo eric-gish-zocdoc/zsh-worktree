@@ -6,6 +6,11 @@
 
 set -e
 
+# If stdin is not a terminal (e.g., piped from curl), reconnect to /dev/tty
+if [ ! -t 0 ]; then
+  exec </dev/tty
+fi
+
 REPO_URL="https://github.com/eric-gish-zocdoc/zsh-worktree"
 PLUGIN_NAME="worktree"
 
