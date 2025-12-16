@@ -22,6 +22,11 @@ print_error() { echo -e "${RED}❌ $1${NC}"; }
 print_info() { echo -e "$1"; }
 print_prompt() { echo -e "${BLUE}$1${NC}"; }
 
+# Read from /dev/tty to work with curl | bash
+read_input() {
+  read "$@" </dev/tty
+}
+
 # Detect installation method
 detect_install_type() {
   if [[ -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins" ]]; then
@@ -49,7 +54,7 @@ configure_plugin() {
   # Repos root
   print_prompt "Where are your Git repositories located?"
   echo "  (This is the parent directory containing your repos)"
-  read -p "  [$default_repos_root]: " repos_root
+  read_input -p "  [$default_repos_root]: " repos_root
   repos_root="${repos_root:-$default_repos_root}"
   # Expand ~ to $HOME
   repos_root="${repos_root/#\~/$HOME}"
@@ -58,7 +63,7 @@ configure_plugin() {
   # Worktrees directory
   local suggested_worktrees="$repos_root/worktrees"
   print_prompt "Where should worktrees be created?"
-  read -p "  [$suggested_worktrees]: " worktrees_dir
+  read_input -p "  [$suggested_worktrees]: " worktrees_dir
   worktrees_dir="${worktrees_dir:-$suggested_worktrees}"
   worktrees_dir="${worktrees_dir/#\~/$HOME}"
   echo ""
@@ -66,7 +71,7 @@ configure_plugin() {
   # Default repo
   print_prompt "What is your default/primary repository name?"
   echo "  (The repo you use most often, e.g., 'frontend-monorepo')"
-  read -p "  [no default]: " default_repo
+  read_input -p "  [no default]: " default_repo
   echo ""
   
   # Show summary
@@ -83,7 +88,7 @@ configure_plugin() {
   fi
   echo ""
   
-  read -p "Add this configuration to ~/.zshrc? [Y/n]: " add_config
+  read_input -p "Add this configuration to ~/.zshrc? [Y/n]: " add_config
   add_config="${add_config:-Y}"
   
   if [[ "$add_config" =~ ^[Yy]$ ]]; then
@@ -115,7 +120,7 @@ add_config_to_zshrc() {
   # Check if configuration already exists
   if grep -q "WORKTREE_REPOS_ROOT" "$zshrc" 2>/dev/null; then
     print_warning "Worktree configuration already exists in ~/.zshrc"
-    read -p "Replace existing configuration? [y/N]: " replace
+    read_input -p "Replace existing configuration? [y/N]: " replace
     if [[ ! "$replace" =~ ^[Yy]$ ]]; then
       print_info "Skipping configuration update."
       return
@@ -236,7 +241,7 @@ uninstall() {
   
   # Optionally remove config from .zshrc
   if grep -q "WORKTREE_REPOS_ROOT" "$HOME/.zshrc" 2>/dev/null; then
-    read -p "Remove worktree configuration from ~/.zshrc? [y/N]: " remove_config
+    read_input -p "Remove worktree configuration from ~/.zshrc? [y/N]: " remove_config
     if [[ "$remove_config" =~ ^[Yy]$ ]]; then
       sed -i.bak '/# Worktree plugin configuration/,/^$/d' "$HOME/.zshrc"
       sed -i.bak '/WORKTREE_REPOS_ROOT/d' "$HOME/.zshrc"
@@ -273,7 +278,7 @@ main() {
           echo "  1) Oh My Zsh (recommended)"
           echo "  2) Standalone"
           echo ""
-          read -p "Enter choice [1/2]: " choice
+          read_input -p "Enter choice [1/2]: " choice
           
           case "$choice" in
             1)
