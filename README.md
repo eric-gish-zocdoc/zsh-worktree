@@ -113,7 +113,7 @@ After creating a worktree, the plugin can display setup instructions. There are 
 ### Option 1: Default Message
 
 ```zsh
-export WORKTREE_POST_CREATE_MSG="npm install\nnpm run build"
+export WORKTREE_POST_CREATE_MSG="npm install \n npm run build"
 ```
 
 ### Option 2: Per-Repo Messages
@@ -142,8 +142,8 @@ worktree_post_create_hook() {
       echo "  3. cursor ."
       ;;
     backend-repo)
-      echo "  1. dotnet restore"
-      echo "  2. dotnet build"
+      echo "  1. make setup"
+      echo "  2. cursor ."
       ;;
     *)
       echo "  Set up your environment for $repo"
